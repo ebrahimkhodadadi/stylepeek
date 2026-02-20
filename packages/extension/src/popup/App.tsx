@@ -27,7 +27,7 @@ export default function App() {
       const tabId = tabs[0]?.id;
       if (!tabId) { setError('No active tab'); setLoading(false); return; }
 
-      chrome.runtime.sendMessage({ type: 'EXTRACT_PAGE', tabId }, (res) => {
+      chrome.runtime.sendMessage({ type: 'EXTRACT_REQUEST', tabId }, (res) => {
         if (chrome.runtime.lastError) {
           setError(chrome.runtime.lastError.message || 'Extraction failed');
           setLoading(false);
@@ -57,7 +57,7 @@ export default function App() {
   }, []);
 
   const openPanel = useCallback((defaultTab?: string) => {
-    chrome.runtime.sendMessage({ type: 'OPEN_PANEL', defaultTab });
+    chrome.runtime.sendMessage({ type: 'OPEN_PANEL', tab: defaultTab });
   }, []);
 
   const toggleTheme = useCallback(async () => {

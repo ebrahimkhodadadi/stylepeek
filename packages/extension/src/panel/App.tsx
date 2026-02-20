@@ -59,7 +59,7 @@ export default function App() {
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
       const tabId = tabs[0]?.id;
       if (!tabId) { setLoading(false); return; }
-      chrome.runtime.sendMessage({ type: 'EXTRACT_PAGE', tabId }, (res: any) => {
+      chrome.runtime.sendMessage({ type: 'EXTRACT_REQUEST', tabId }, (res: any) => {
         if (res?.data) { setData(res.data); }
         setLoading(false);
       });
@@ -81,11 +81,11 @@ export default function App() {
   }, [addToast]);
 
   return (
-    <div className="min-h-screen bg-surface text-primary flex">
+    <div className="flex min-h-screen bg-surface text-primary">
       {/* Sidebar */}
-      <aside className="w-14 bg-card border-r border-border flex flex-col items-center py-4 gap-1 flex-shrink-0">
+      <aside className="flex flex-col items-center flex-shrink-0 gap-1 py-4 border-r w-14 bg-card border-border">
         {/* Logo */}
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center mb-4">
+        <div className="flex items-center justify-center mb-4 w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700">
           <svg viewBox="0 0 128 128" className="w-5 h-5">
             <path d="M64 8 C50 8, 24 40, 24 72 C24 96, 42 120, 64 120 C86 120, 104 96, 104 72 C104 40, 78 8, 64 8Z" fill="white" opacity="0.9" />
           </svg>
@@ -120,32 +120,32 @@ export default function App() {
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 flex flex-col min-w-0">
+      <main className="flex flex-col flex-1 min-w-0">
         {/* Header */}
-        <header className="h-12 border-b border-border flex items-center px-4 gap-3 flex-shrink-0">
+        <header className="flex items-center flex-shrink-0 h-12 gap-3 px-4 border-b border-border">
           <h1 className="text-sm font-semibold text-primary">
             {TABS.find(t => t.id === tab)?.label || 'Settings'}
           </h1>
           {data && (
-            <span className="text-xs text-secondary truncate ml-auto">{data.title || data.url}</span>
+            <span className="ml-auto text-xs truncate text-secondary">{data.title || data.url}</span>
           )}
         </header>
 
         {loading ? (
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex items-center justify-center flex-1">
             <div className="flex flex-col items-center gap-3">
-              <div className="w-10 h-10 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+              <div className="w-10 h-10 border-2 rounded-full border-accent border-t-transparent animate-spin" />
               <span className="text-sm text-secondary">Analyzing page…</span>
             </div>
           </div>
         ) : showSettings ? (
           <Settings settings={settings} onUpdate={updateSettings} />
         ) : !data ? (
-          <div className="flex-1 flex items-center justify-center text-secondary text-sm">
+          <div className="flex items-center justify-center flex-1 text-sm text-secondary">
             No data — navigate to a page and this panel will auto-analyze.
           </div>
         ) : (
-          <div className="flex-1 overflow-y-auto p-4 scrollbar-thin">
+          <div className="flex-1 p-4 overflow-y-auto scrollbar-thin">
             {tab === 'colors' && <ColorsTab data={data} onCopy={copyToClipboard} settings={settings} />}
             {tab === 'typography' && <TypographyTab data={data} onCopy={copyToClipboard} />}
             {tab === 'spacing' && <SpacingTab data={data} onCopy={copyToClipboard} />}
