@@ -82,7 +82,9 @@ Inspect any page you're already viewing — no crawling needed:
 3. Click **Load unpacked** → select `packages/extension/dist/`
 4. Navigate to any website and click the **Stylepeek** icon
 
-The popup shows colors, fonts, and spacing. Open DevTools (F12) → **Stylepeek** panel for full inspection.
+![StylePeek Chrome Extension](assets/screenshot_extension.png)
+
+The popup shows colors, fonts, and spacing. Open the detached panel (**Alt+Shift+S**) for full inspection with Colors, Typography, Spacing, Inspector, Assets, and Export tabs.
 
 ---
 
