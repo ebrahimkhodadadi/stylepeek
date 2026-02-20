@@ -7,6 +7,8 @@ import { SpacingSection } from './SpacingSection.js';
 import { ShadowsSection } from './ShadowsSection.js';
 import { ExportPanel } from './ExportPanel.js';
 import { TechStack } from './TechStack.js';
+import { SvgIconsPanel } from './SvgIconsPanel.js';
+import { AssetsPanel } from './AssetsPanel.js';
 
 interface Props {
   ds: SerializedDesignSystem;
@@ -16,6 +18,8 @@ interface Props {
 const TABS = [
   { id: 'overview',    label: 'Overview' },
   { id: 'colors',      label: 'Colors' },
+  { id: 'icons',       label: 'SVG Icons' },
+  { id: 'assets',      label: 'Assets' },
   { id: 'typography',  label: 'Typography' },
   { id: 'spacing',     label: 'Spacing' },
   { id: 'more',        label: 'Shadows & Components' },
@@ -64,6 +68,7 @@ export function ResultsDashboard({ ds, onReset }: Props) {
           >
             {t.label}
             {t.id === 'colors' && ` (${ds.colors.palette.length})`}
+            {t.id === 'icons' && ` (${ds.assets.icons.length})`}
             {t.id === 'typography' && ` (${ds.typography.fontFamilies.length})`}
             {t.id === 'spacing' && ` (${ds.spacing.length})`}
           </button>
@@ -74,11 +79,13 @@ export function ResultsDashboard({ ds, onReset }: Props) {
       <div className="min-h-96">
         {tab === 'overview'   && <OverviewStats ds={ds} />}
         {tab === 'colors'     && <ColorGrid colors={ds.colors} />}
+        {tab === 'icons'      && <SvgIconsPanel icons={ds.assets.icons} />}
+        {tab === 'assets'     && <AssetsPanel assets={ds.assets} />}
         {tab === 'typography' && <TypographySection typography={ds.typography} />}
         {tab === 'spacing'    && <SpacingSection spacing={ds.spacing} borderRadius={ds.borderRadius} breakpoints={ds.breakpoints} zIndex={ds.zIndex} />}
         {tab === 'more'       && <ShadowsSection shadows={ds.shadows} components={ds.components} />}
         {tab === 'export'     && <ExportPanel ds={ds} />}
-        {tab === 'tech'       && <TechStack ds={ds} />}
+        {tab === 'tech'       && <TechStack ds={ds} onNavigate={(t) => setTab(t as Tab)} />}
       </div>
     </div>
   );
