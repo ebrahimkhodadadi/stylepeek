@@ -75,9 +75,9 @@ export function ExportPanel({ ds }: Props) {
   }, []);
 
   return (
-    <div className="animate-slide-up space-y-4">
+    <div className="space-y-4 animate-slide-up">
       {/* Download all */}
-      <div className="card flex items-center justify-between">
+      <div className="flex items-center justify-between card">
         <div>
           <h3 className="text-sm font-medium text-gray-200">Download All Formats</h3>
           <p className="text-xs text-gray-500 mt-0.5">
@@ -87,7 +87,7 @@ export function ExportPanel({ ds }: Props) {
         <button
           onClick={() => void downloadAll()}
           disabled={generating !== null}
-          className="px-4 py-2 bg-brand-500 hover:bg-brand-600 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2"
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-colors rounded-lg bg-brand-500 hover:bg-brand-600 disabled:opacity-50"
         >
           {generating === 'all' ? (
             <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25" /><path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="opacity-75" /></svg>
@@ -99,24 +99,24 @@ export function ExportPanel({ ds }: Props) {
       </div>
 
       {/* Format cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {EXPORT_FORMATS.map(fmt => (
           <div
             key={fmt.id}
-            className="card hover:border-gray-600 transition-colors group cursor-pointer"
+            className="transition-colors cursor-pointer card hover:border-gray-600 group"
             onClick={() => void generateExport(fmt.id)}
           >
             <div className="flex items-start justify-between mb-2">
               <div>
-                <h4 className="text-sm font-medium text-gray-200 group-hover:text-brand-400 transition-colors">
+                <h4 className="text-sm font-medium text-gray-200 transition-colors group-hover:text-brand-400">
                   {fmt.label}
                 </h4>
-                <span className="tag mt-1">{fmt.ext}</span>
+                <span className="mt-1 tag">{fmt.ext}</span>
               </div>
               {generating === fmt.id ? (
                 <svg className="w-5 h-5 text-brand-400 animate-spin" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25" /><path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="opacity-75" /></svg>
               ) : (
-                <svg className="w-5 h-5 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                <svg className="w-5 h-5 text-gray-600 transition-colors group-hover:text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
               )}
             </div>
             <p className="text-xs text-gray-500">{fmt.description}</p>
@@ -126,14 +126,14 @@ export function ExportPanel({ ds }: Props) {
 
       {/* Error */}
       {error && (
-        <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+        <div className="p-3 text-sm text-red-400 border rounded-lg bg-red-500/10 border-red-500/20">
           {error}
         </div>
       )}
 
       {/* Preview */}
       {preview && (
-        <div className="card space-y-3">
+        <div className="space-y-3 card">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <h4 className="text-sm font-medium text-gray-300">{preview.filename}</h4>
@@ -142,19 +142,19 @@ export function ExportPanel({ ds }: Props) {
             <div className="flex gap-2">
               <button
                 onClick={() => copyToClipboard(preview.content)}
-                className="text-xs text-gray-400 hover:text-white px-2 py-1 border border-gray-700 rounded transition-colors"
+                className="px-2 py-1 text-xs text-gray-400 transition-colors border border-gray-700 rounded hover:text-white"
               >
                 Copy
               </button>
               <button
                 onClick={() => downloadFile(preview)}
-                className="text-xs text-brand-400 hover:text-brand-300 px-2 py-1 bg-brand-500/10 border border-brand-500/20 rounded transition-colors"
+                className="px-2 py-1 text-xs transition-colors border rounded text-brand-400 hover:text-brand-300 bg-brand-500/10 border-brand-500/20"
               >
                 Download
               </button>
             </div>
           </div>
-          <pre className="bg-gray-950 border border-gray-800 rounded-lg p-4 text-xs text-gray-400 font-mono overflow-auto max-h-80 whitespace-pre-wrap">
+          <pre className="p-4 overflow-auto font-mono text-xs text-gray-400 whitespace-pre-wrap border border-gray-800 rounded-lg bg-gray-950 max-h-80">
             {preview.content.slice(0, 5000)}
             {preview.content.length > 5000 && '\n\n... (truncated)'}
           </pre>

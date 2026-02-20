@@ -8,8 +8,7 @@
 
 Point stylepeek at any URL and get back a ready-to-use Tailwind config, CSS variables, Figma tokens, or a visual HTML style guide — in seconds.
 
-<!-- TODO: Add VHS-generated GIF demo here -->
-<!-- ![demo](assets/demo.gif) -->
+![stylepeek demo](assets/demo.gif)
 
 ---
 
@@ -18,6 +17,8 @@ Point stylepeek at any URL and get back a ready-to-use Tailwind config, CSS vari
 Stylepeek comes in **three flavors** — pick whichever fits your workflow.
 
 ### 1. Command Line (CLI)
+
+![stylepeek help](assets/help.gif)
 
 ```bash
 # Install
@@ -259,6 +260,26 @@ pnpm start:web
 3. Create a feature branch
 4. Make changes, run `pnpm test && pnpm typecheck`
 5. Open a PR
+
+### Regenerating demo GIFs
+
+Demo GIFs in `assets/` are generated automatically by the [VHS workflow](.github/workflows/vhs.yml) on every push to `main`. To regenerate locally:
+
+```bash
+# 1. Install VHS — https://github.com/charmbracelet/vhs
+#    macOS:    brew install vhs
+#    Arch:     pacman -S vhs
+#    Windows:  scoop install vhs
+
+# 2. Build the project and make the CLI available
+pnpm build
+pnpm playwright:install
+pnpm --filter stylepeek exec -- npm link   # adds `stylepeek` to your PATH
+
+# 3. Generate the GIFs
+vhs assets/help.tape   # → assets/help.gif
+vhs assets/demo.tape   # → assets/demo.gif  (requires internet, crawls example.com)
+```
 
 ## License
 

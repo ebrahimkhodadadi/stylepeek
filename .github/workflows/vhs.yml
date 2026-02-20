@@ -1,0 +1,59 @@
+name: Generate Demo GIFs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/*.tape'
+      - 'packages/cli/src/**'
+      - '.github/workflows/vhs.yml'
+  workflow_dispatch: # allow manual re-runs
+
+jobs:
+  vhs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build all packages
+        run: pnpm build
+
+      - name: Install Playwright Chromium
+        run: pnpm playwright:install
+
+      # Create a `stylepeek` binary on PATH that delegates to the built CLI
+      - name: Make stylepeek available on PATH
+        run: |
+          printf '#!/usr/bin/env bash\nnode "%s/packages/cli/dist/index.js" "$@"\n' \
+            "$GITHUB_WORKSPACE" | sudo tee /usr/local/bin/stylepeek > /dev/null
+          sudo chmod +x /usr/local/bin/stylepeek
+          stylepeek --version
+
+      - name: Generate GIFs with VHS
+        uses: charmbracelet/vhs-action@v2
+        with:
+          path: assets/
+          install-fonts: true
+        env:
+          VHS_NO_SANDBOX: true
+
+      - name: Commit generated GIFs
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: regenerate demo GIFs [skip ci]"
+          file_pattern: "assets/*.gif"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
