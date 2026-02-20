@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.turbo/
+*.tsbuildinfo
+.env
+.env.local
+stylepeek-output/
+coverage/
+*.zip
+.DS_Store
+Thumbs.db
+*.timestamp-*

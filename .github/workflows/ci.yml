@@ -1,0 +1,108 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20, 22]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build
+        run: pnpm build
+
+      - name: Test
+        run: pnpm test
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      # ── Read versions from package.json ──
+      - name: Get package versions
+        id: versions
+        run: |
+          CORE_VERSION=$(node -p "require('./packages/core/package.json').version")
+          CLI_VERSION=$(node -p "require('./packages/cli/package.json').version")
+          echo "core=$CORE_VERSION" >> "$GITHUB_OUTPUT"
+          echo "cli=$CLI_VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$CLI_VERSION" >> "$GITHUB_OUTPUT"
+
+      # ── Publish @stylepeek/core to npm ──
+      - name: Publish @stylepeek/core
+        run: |
+          cd packages/core
+          npm publish --access public --provenance --no-git-checks 2>/dev/null || echo "Version already published, skipping"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # ── Publish stylepeek CLI to npm ──
+      - name: Publish stylepeek (CLI)
+        run: |
+          cd packages/cli
+          npm publish --access public --provenance --no-git-checks 2>/dev/null || echo "Version already published, skipping"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # ── Package Chrome extension as zip ──
+      - name: Package extension
+        run: |
+          cd packages/extension/dist
+          zip -r ../../../stylepeek-extension-${{ steps.versions.outputs.cli }}.zip .
+
+      # ── Create GitHub Release ──
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.versions.outputs.tag }}
+          name: stylepeek ${{ steps.versions.outputs.tag }}
+          generate_release_notes: true
+          files: |
+            stylepeek-extension-${{ steps.versions.outputs.cli }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

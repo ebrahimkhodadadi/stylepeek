@@ -1,0 +1,40 @@
+{
+  "name": "@stylepeek/core",
+  "version": "0.1.0",
+  "description": "Core extraction engine for stylepeek — extracts design systems from websites",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "chroma-js": "^3.1.2",
+    "p-limit": "^6.2.0",
+    "p-retry": "^6.2.1",
+    "playwright": "^1.49.0",
+    "postcss": "^8.4.49",
+    "postcss-value-parser": "^4.2.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/chroma-js": "^2.4.4",
+    "@types/node": "^22.10.0",
+    "rimraf": "^6.0.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0"
+  },
+  "license": "MIT"
+}

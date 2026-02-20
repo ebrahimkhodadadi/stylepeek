@@ -1,0 +1,42 @@
+{
+  "name": "stylepeek",
+  "version": "0.1.0",
+  "description": "Extract complete design systems from any website — CLI tool",
+  "type": "module",
+  "bin": {
+    "stylepeek": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "echo 'no tests'",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@stylepeek/core": "workspace:*",
+    "commander": "^12.1.0",
+    "chalk": "^5.4.0",
+    "ora": "^8.1.0",
+    "conf": "^13.0.1",
+    "open": "^10.1.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0",
+    "rimraf": "^6.0.0"
+  },
+  "keywords": [
+    "css",
+    "design-system",
+    "design-tokens",
+    "tailwind",
+    "style-guide",
+    "crawler",
+    "extractor"
+  ],
+  "license": "MIT"
+}
