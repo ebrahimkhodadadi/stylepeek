@@ -8,7 +8,7 @@
 
 Point stylepeek at any URL and get back a ready-to-use Tailwind config, CSS variables, Figma tokens, or a visual HTML style guide — in seconds.
 
-![stylepeek demo](assets/demo.gif)
+![stylepeek web UI](assets/screenshot_web.png)
 
 ---
 
@@ -17,8 +17,6 @@ Point stylepeek at any URL and get back a ready-to-use Tailwind config, CSS vari
 Stylepeek comes in **three flavors** — pick whichever fits your workflow.
 
 ### 1. Command Line (CLI)
-
-![stylepeek help](assets/help.gif)
 
 ```bash
 # Install
@@ -263,22 +261,19 @@ pnpm start:web
 
 ### Regenerating demo GIFs
 
-Demo GIFs in `assets/` are generated automatically by the [VHS workflow](.github/workflows/vhs.yml) on every push to `main`. To regenerate locally:
+Tape files live in `assets/`. Use [VHS](https://github.com/charmbracelet/vhs) to generate the GIFs locally:
 
 ```bash
-# 1. Install VHS — https://github.com/charmbracelet/vhs
-#    macOS:    brew install vhs
-#    Arch:     pacman -S vhs
-#    Windows:  scoop install vhs
+# Install VHS: https://github.com/charmbracelet/vhs
+# macOS: brew install vhs  |  Windows: scoop install vhs
 
-# 2. Build the project and make the CLI available
-pnpm build
-pnpm playwright:install
-pnpm --filter stylepeek exec -- npm link   # adds `stylepeek` to your PATH
+# Build & link CLI first
+pnpm build && pnpm playwright:install
+pnpm --filter stylepeek exec -- npm link
 
-# 3. Generate the GIFs
+# Record
 vhs assets/help.tape   # → assets/help.gif
-vhs assets/demo.tape   # → assets/demo.gif  (requires internet, crawls example.com)
+vhs assets/demo.tape   # → assets/demo.gif
 ```
 
 ## License
