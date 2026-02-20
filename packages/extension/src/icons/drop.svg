@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#A855F7"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+    <radialGradient id="h" cx="0.35" cy="0.3" r="0.5">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="s" cx="0.5" cy="0.95" r="0.3">
+      <stop offset="0%" stop-color="#5B21B6" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#5B21B6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Drop shadow glow -->
+  <ellipse cx="64" cy="118" rx="28" ry="6" fill="#7C3AED" opacity="0.2"/>
+  <!-- Main teardrop -->
+  <path d="M64 8 C64 8 20 62 20 82 C20 106.3 39.7 118 64 118 C88.3 118 108 106.3 108 82 C108 62 64 8 64 8Z" fill="url(#g)"/>
+  <!-- Highlight -->
+  <path d="M64 8 C64 8 20 62 20 82 C20 106.3 39.7 118 64 118 C88.3 118 108 106.3 108 82 C108 62 64 8 64 8Z" fill="url(#h)"/>
+  <!-- Bottom glow -->
+  <path d="M64 8 C64 8 20 62 20 82 C20 106.3 39.7 118 64 118 C88.3 118 108 106.3 108 82 C108 62 64 8 64 8Z" fill="url(#s)"/>
+  <!-- White reflection -->
+  <ellipse cx="48" cy="60" rx="12" ry="18" fill="white" opacity="0.25" transform="rotate(-15 48 60)"/>
+</svg>

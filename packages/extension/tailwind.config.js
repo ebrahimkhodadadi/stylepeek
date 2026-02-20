@@ -1,17 +1,39 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./src/**/*.{ts,tsx,html}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        brand: {
-          50: '#eef2ff',
-          100: '#e0e7ff',
-          400: '#818cf8',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
+        surface: 'var(--bg-surface)',
+        card: 'var(--bg-card)',
+        hover: 'var(--bg-hover)',
+        primary: 'var(--text-primary)',
+        secondary: 'var(--text-secondary)',
+        tertiary: 'var(--text-tertiary)',
+        border: 'var(--border)',
+        accent: {
+          DEFAULT: 'var(--accent)',
+          hover: 'var(--accent-hover)',
         },
+      },
+      textColor: {
+        primary: 'var(--text-primary)',
+        secondary: 'var(--text-secondary)',
+        tertiary: 'var(--text-tertiary)',
+        accent: 'var(--accent)',
+      },
+      backgroundColor: {
+        surface: 'var(--bg-surface)',
+        card: 'var(--bg-card)',
+        hover: 'var(--bg-hover)',
+      },
+      borderColor: {
+        border: 'var(--border)',
+      },
+      animation: {
+        'slide-up': 'slide-up 200ms ease-out',
+        'shimmer': 'shimmer 2s infinite',
       },
     },
   },

@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "Stylepeek — Design System Extractor",
-  "description": "Extract design tokens, colors, typography, and spacing from any website",
-  "version": "0.1.0",
-  "permissions": ["activeTab", "scripting", "storage"],
+  "name": "StylePeek — Design System Extractor",
+  "description": "Extract design tokens, colors, typography, spacing, and assets from any website",
+  "version": "0.2.0",
+  "permissions": ["activeTab", "scripting", "storage", "downloads", "tabs"],
   "action": {
     "default_popup": "src/popup/index.html",
     "default_icon": {
@@ -30,5 +30,15 @@
       "run_at": "document_idle"
     }
   ],
-  "devtools_page": "src/devtools/devtools.html"
+  "devtools_page": "src/devtools/devtools.html",
+  "commands": {
+    "open-panel": {
+      "suggested_key": { "default": "Alt+Shift+S" },
+      "description": "Open StylePeek panel"
+    },
+    "inspect-mode": {
+      "suggested_key": { "default": "Alt+I" },
+      "description": "Toggle element inspector"
+    }
+  }
 }

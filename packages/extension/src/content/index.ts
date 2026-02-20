@@ -1,24 +1,54 @@
 /**
- * Content script — extracts design data from the current page.
- * Runs in the context of the web page.
+ * Content-script entry point.
+ * Listens for messages from the background / popup / panel.
  */
-
 import { extractPageData } from './extract';
+import { activateInspector, deactivateInspector } from './inspector';
+import type { Message, ElementInspection } from '../shared/messaging';
 
-// Listen for messages from popup/devtools
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-  if (message.type === 'EXTRACT_PAGE') {
-    try {
-      const data = extractPageData();
-      sendResponse({ ok: true, data });
-    } catch (error) {
-      sendResponse({ ok: false, error: (error as Error).message });
+/* ── Message handler ───────────────────────────────────── */
+
+chrome.runtime.onMessage.addListener(
+  (msg: Message, _sender, sendResponse) => {
+    switch (msg.type) {
+      case 'PING':
+        sendResponse({ ok: true });
+        return false;
+
+      case 'EXTRACT_REQUEST': {
+        try {
+          const data = extractPageData();
+          sendResponse({ ok: true, data });
+        } catch (err) {
+          sendResponse({ ok: false, data: null, error: String(err) });
+        }
+        return false;
+      }
+
+      case 'INSPECT_ACTIVATE':
+        activateInspector(
+          (data: ElementInspection) => {
+            chrome.runtime.sendMessage({ type: 'ELEMENT_SELECTED', data });
+          },
+          (data) => {
+            if (data) {
+              chrome.runtime.sendMessage({ type: 'ELEMENT_HOVERED', data });
+            }
+          },
+        );
+        sendResponse({ ok: true });
+        return false;
+
+      case 'INSPECT_DEACTIVATE':
+        deactivateInspector();
+        sendResponse({ ok: true });
+        return false;
+
+      default:
+        return false;
     }
-    return true; // keep channel open for async response
-  }
+  },
+);
 
-  if (message.type === 'PING') {
-    sendResponse({ ok: true });
-    return true;
-  }
-});
+/* ── Inject a small marker so background knows we're loaded */
+(window as any).__stylepeek_loaded = true;

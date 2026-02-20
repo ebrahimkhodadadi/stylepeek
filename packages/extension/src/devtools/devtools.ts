@@ -1,6 +1,5 @@
-// Register the DevTools panel
 chrome.devtools.panels.create(
-  'Stylepeek',
-  '', // icon path
+  'StylePeek',
+  '',
   'src/devtools/panel.html',
 );
