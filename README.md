@@ -18,6 +18,8 @@ Stylepeek comes in **three flavors** — pick whichever fits your workflow.
 
 ### 1. Command Line (CLI)
 
+![stylepeek CLI](assets/cli-demo.png)
+
 ```bash
 # Install
 npm i -g stylepeek          # or: pnpm add -g stylepeek
@@ -259,21 +261,12 @@ pnpm start:web
 4. Make changes, run `pnpm test && pnpm typecheck`
 5. Open a PR
 
-### Regenerating demo GIFs
-
-Tape files live in `assets/`. Use [VHS](https://github.com/charmbracelet/vhs) to generate the GIFs locally:
+### Regenerating CLI screenshots
 
 ```bash
-# Install VHS: https://github.com/charmbracelet/vhs
-# macOS: brew install vhs  |  Windows: scoop install vhs
-
-# Build & link CLI first
-pnpm build && pnpm playwright:install
-pnpm --filter stylepeek exec -- npm link
-
-# Record
-vhs assets/help.tape   # → assets/help.gif
-vhs assets/demo.tape   # → assets/demo.gif
+# Requires: pnpm build && pnpm playwright:install
+node scripts/generate-cli-images.mjs
+# → assets/cli-help.png, assets/cli-formats.png, assets/cli-demo.png
 ```
 
 ## License
